@@ -10,6 +10,7 @@ library(readr)
 library(broom)
 library(dbplyr)
 library(viridis)
+library(corrplot)
 
 knitr::opts_chunk$set(
 	echo = TRUE,
@@ -44,7 +45,60 @@ janitor::clean_names()
 skimr::skim(senic_data)
 senic_data =
   senic_data %>%
-  subset(select = -c(id, length, age,risk, beds,region, census   ))
+  #c is to include only these while -c is remove these
+  subset(select = c(id, length, age,risk, beds,region,census   ))
 #exclude data for culture, xrays, msch, nurses, and svcs 
+
+```
+
+
+```{r}
+sapply(senic_data, class)
+```
+
+Create a new chunk comman +opton+i 
+Change region from numeric to factor 
+```{r}
+senic_data = senic_data%>%
+  mutate(region = as.factor(region), 
+        id = as.factor(id),
+        age = as.numeric(age),
+        length=as.numeric(length))%>%
+  mutate(risk=(risk*.100))
+  
+senic_data1 =
+  senic_data %>%
+  #c is to include only these while -c is remove these
+  subset(select = c(length, age, beds,census   ))
+#exclude data for culture, xrays, msch, nurses, and svcs 
+
+```
+#1_Univariate
+Histograms in case needed but i think SKIMR IS okay
+```{r}
+
+ggplot(senic_data, aes(x = age)) + 
+  geom_histogram()
+## Warning: Removed 3 rows containing non-finite values (stat_bin).
+
+```
+
+#2_Correlations -https://statsandr.com/blog/correlation-coefficient-and-correlation-test-in-r/
+
+```{r}
+
+cor(senic_data$age, senic_data$length, method="pearson")
+
+ggplot(senic_data) +
+  aes(x = age, y = length) +
+  geom_point(colour = "#0c4c8a") +
+  theme_minimal()
+
+#corr matrix, run corrplot lib 
+
+corrplot(cor(senic_data1),
+  method = "number",
+  type = "upper" # show only upper side
+)
 ```
 

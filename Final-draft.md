@@ -66,6 +66,75 @@ Data summary
 ``` r
 senic_data =
   senic_data %>%
-  subset(select = -c(id, length, age,risk, beds,region, census   ))
+  #c is to include only these while -c is remove these
+  subset(select = c(id, length, age,risk, beds,region,census   ))
 #exclude data for culture, xrays, msch, nurses, and svcs 
 ```
+
+``` r
+sapply(senic_data, class)
+```
+
+    ##        id    length       age      risk      beds    region    census 
+    ## "numeric" "numeric" "numeric" "numeric" "numeric" "numeric" "numeric"
+
+Create a new chunk comman +opton+i Change region from numeric to factor
+
+``` r
+senic_data = senic_data%>%
+  mutate(region = as.factor(region), 
+        id = as.factor(id),
+        age = as.numeric(age),
+        length=as.numeric(length))%>%
+  mutate(risk=(risk*.100))
+  
+senic_data1 =
+  senic_data %>%
+  #c is to include only these while -c is remove these
+  subset(select = c(length, age, beds,census   ))
+#exclude data for culture, xrays, msch, nurses, and svcs 
+```
+
+\#1\_Univariate Histograms in case needed but i think SKIMR IS okay
+
+``` r
+ggplot(senic_data, aes(x = age)) + 
+  geom_histogram()
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+<img src="Final-draft_files/figure-gfm/unnamed-chunk-3-1.png" width="90%" />
+
+``` r
+## Warning: Removed 3 rows containing non-finite values (stat_bin).
+```
+
+\#2\_Correlations
+-<https://statsandr.com/blog/correlation-coefficient-and-correlation-test-in-r/>
+
+``` r
+cor(senic_data$age, senic_data$length, method="pearson")
+```
+
+    ## [1] 0.188914
+
+``` r
+ggplot(senic_data) +
+  aes(x = age, y = length) +
+  geom_point(colour = "#0c4c8a") +
+  theme_minimal()
+```
+
+<img src="Final-draft_files/figure-gfm/unnamed-chunk-4-1.png" width="90%" />
+
+``` r
+#corr matrix, run corrplot lib 
+
+corrplot(cor(senic_data1),
+  method = "number",
+  type = "upper" # show only upper side
+)
+```
+
+<img src="Final-draft_files/figure-gfm/unnamed-chunk-4-2.png" width="90%" />
