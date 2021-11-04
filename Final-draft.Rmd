@@ -1,0 +1,50 @@
+---
+title: "201A Analysis Project"
+output: github_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library (patchwork)
+library(readr)
+library(broom)
+library(dbplyr)
+library(viridis)
+
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+	fig.width = 8, 
+  fig.height = 6,
+  out.width = "90%"
+)
+
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+```
+
+### Project Title
+201A Analysis Project 
+### Members:
+
+Julián Ponce
+
+
+``` {r importing data}
+senic_data =
+  read_csv (file = "./data/SENIC.csv")%>%
+janitor::clean_names()
+skimr::skim(senic_data)
+senic_data =
+  senic_data %>%
+  subset(select = -c(id, length, age,risk, beds,region, census   ))
+#exclude data for culture, xrays, msch, nurses, and svcs 
+```
+
