@@ -67,7 +67,7 @@ Data summary
 senic_data =
   senic_data %>%
   #c is to include only these while -c is remove these
-  subset(select = c(id, length, age,risk, beds,region,census   ))
+  subset(select = c(id, length, age,risk, beds,region,census ))
 #exclude data for culture, xrays, msch, nurses, and svcs 
 ```
 
@@ -91,33 +91,63 @@ senic_data = senic_data%>%
 senic_data1 =
   senic_data %>%
   #c is to include only these while -c is remove these
-  subset(select = c(length, age, beds,census   ))
+  subset(select = c(length, age,risk, beds,census   ))
 #exclude data for culture, xrays, msch, nurses, and svcs 
 ```
 
 \#1\_Univariate Histograms in case needed but i think SKIMR IS okay
 
 ``` r
+histogram_age =
 ggplot(senic_data, aes(x = age)) + 
   geom_histogram()
+## Warning: Removed 3 rows containing non-finite values (stat_bin).
+#length
+histogram_length=
+ggplot(senic_data, aes(x = length)) + 
+  geom_histogram()
+
+histogram_risk =
+ggplot(senic_data, aes(x = risk)) + 
+  geom_histogram()
+
+histogram_beds =
+ggplot(senic_data, aes(x = beds)) + 
+  geom_histogram()
+
+histogram_census =
+ggplot(senic_data, aes(x = census)) + 
+  geom_histogram()
+
+histogram_age+histogram_length+histogram_risk+histogram_beds+histogram_census
 ```
 
     ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
-<img src="Final-draft_files/figure-gfm/unnamed-chunk-3-1.png" width="90%" />
-
-``` r
-## Warning: Removed 3 rows containing non-finite values (stat_bin).
-```
+<img src="Final-draft_files/figure-gfm/histograms #1-1.png" width="90%" />
 
 \#2\_Correlations
 -<https://statsandr.com/blog/correlation-coefficient-and-correlation-test-in-r/>
 
 ``` r
-cor(senic_data$age, senic_data$length, method="pearson")
+cor.test(senic_data$age, senic_data$length, method="pearson")
 ```
 
-    ## [1] 0.188914
+    ## 
+    ##  Pearson's product-moment correlation
+    ## 
+    ## data:  senic_data$age and senic_data$length
+    ## t = 2.0268, df = 111, p-value = 0.04508
+    ## alternative hypothesis: true correlation is not equal to 0
+    ## 95 percent confidence interval:
+    ##  0.004335447 0.361044064
+    ## sample estimates:
+    ##      cor 
+    ## 0.188914
 
 ``` r
 ggplot(senic_data) +
@@ -126,7 +156,7 @@ ggplot(senic_data) +
   theme_minimal()
 ```
 
-<img src="Final-draft_files/figure-gfm/unnamed-chunk-4-1.png" width="90%" />
+<img src="Final-draft_files/figure-gfm/unnamed-chunk-1-1.png" width="90%" />
 
 ``` r
 #corr matrix, run corrplot lib 
@@ -137,4 +167,4 @@ corrplot(cor(senic_data1),
 )
 ```
 
-<img src="Final-draft_files/figure-gfm/unnamed-chunk-4-2.png" width="90%" />
+<img src="Final-draft_files/figure-gfm/unnamed-chunk-1-2.png" width="90%" />

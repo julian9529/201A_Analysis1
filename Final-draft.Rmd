@@ -46,19 +46,19 @@ skimr::skim(senic_data)
 senic_data =
   senic_data %>%
   #c is to include only these while -c is remove these
-  subset(select = c(id, length, age,risk, beds,region,census   ))
+  subset(select = c(id, length, age,risk, beds,region,census ))
 #exclude data for culture, xrays, msch, nurses, and svcs 
 
 ```
 
 
-```{r}
+```{r check variable type}
 sapply(senic_data, class)
 ```
 
 Create a new chunk comman +opton+i 
 Change region from numeric to factor 
-```{r}
+```{r change variable type}
 senic_data = senic_data%>%
   mutate(region = as.factor(region), 
         id = as.factor(id),
@@ -69,25 +69,43 @@ senic_data = senic_data%>%
 senic_data1 =
   senic_data %>%
   #c is to include only these while -c is remove these
-  subset(select = c(length, age, beds,census   ))
+  subset(select = c(length, age,risk, beds,census   ))
 #exclude data for culture, xrays, msch, nurses, and svcs 
 
 ```
 #1_Univariate
 Histograms in case needed but i think SKIMR IS okay
-```{r}
+```{r histograms #1}
 
+histogram_age =
 ggplot(senic_data, aes(x = age)) + 
   geom_histogram()
 ## Warning: Removed 3 rows containing non-finite values (stat_bin).
+#length
+histogram_length=
+ggplot(senic_data, aes(x = length)) + 
+  geom_histogram()
 
+histogram_risk =
+ggplot(senic_data, aes(x = risk)) + 
+  geom_histogram()
+
+histogram_beds =
+ggplot(senic_data, aes(x = beds)) + 
+  geom_histogram()
+
+histogram_census =
+ggplot(senic_data, aes(x = census)) + 
+  geom_histogram()
+
+histogram_age+histogram_length+histogram_risk+histogram_beds+histogram_census
 ```
 
 #2_Correlations -https://statsandr.com/blog/correlation-coefficient-and-correlation-test-in-r/
 
 ```{r}
 
-cor(senic_data$age, senic_data$length, method="pearson")
+cor.test(senic_data$age, senic_data$length, method="pearson")
 
 ggplot(senic_data) +
   aes(x = age, y = length) +
