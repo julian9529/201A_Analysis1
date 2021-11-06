@@ -100,33 +100,26 @@ senic_data1 =
 ``` r
 histogram_age =
 ggplot(senic_data, aes(x = age)) + 
-  geom_histogram()
-## Warning: Removed 3 rows containing non-finite values (stat_bin).
-#length
+  geom_histogram(bins =11, color="darkblue", fill="lightblue") + labs (title = "Figure 1.Age Distribution", x="Age", y ="Count") 
+
 histogram_length=
 ggplot(senic_data, aes(x = length)) + 
-  geom_histogram()
+   geom_histogram(bins =11, color="darkblue", fill="lightblue") + labs (title = "Figure 2.Length of Stay Distribution", x="Length of Stay(Days)", y ="Count") 
 
 histogram_risk =
 ggplot(senic_data, aes(x = risk)) + 
-  geom_histogram()
+   geom_histogram(bins =11, color="darkblue", fill="lightblue") + labs (title = "Figure 3.Infection Risk Distribution", x="Infeciton Risk(Years)", y ="Count") 
 
 histogram_beds =
 ggplot(senic_data, aes(x = beds)) + 
-  geom_histogram()
+   geom_histogram(bins =11, color="darkblue", fill="lightblue") + labs (title = "Figure 4. Bed Distribution", x="Number of Beds", y ="Count") 
 
 histogram_census =
 ggplot(senic_data, aes(x = census)) + 
-  geom_histogram()
+     geom_histogram(bins =11, color="darkblue", fill="lightblue") + labs (title = "Figure 5.Census Distribution", x="Average Number of Hospital Patients Per Day", y ="Count") 
 
 histogram_age+histogram_length+histogram_risk+histogram_beds+histogram_census
 ```
-
-    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
 <img src="Final-draft_files/figure-gfm/histograms #1-1.png" width="90%" />
 
