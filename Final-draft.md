@@ -1,11 +1,9 @@
 201A Analysis Project
 ================
 
-### Project Title
+### 201A Analysis Project
 
-201A Analysis Project \#\#\# Members:
-
-Julián Ponce
+### Julián Ponce
 
 ``` r
 senic_data =
@@ -108,7 +106,7 @@ ggplot(senic_data, aes(x = length)) +
 
 histogram_risk =
 ggplot(senic_data, aes(x = risk)) + 
-   geom_histogram(bins =11, color="darkblue", fill="lightblue") + labs (title = "Figure 3.Infection Risk Distribution", x="Infeciton Risk(Years)", y ="Count") 
+   geom_histogram(bins =11, color="darkblue", fill="lightblue") + labs (title = "Figure 3.Infection Distribution", x="Infection Risk(Years)", y ="Count") 
 
 histogram_beds =
 ggplot(senic_data, aes(x = beds)) + 
@@ -118,10 +116,16 @@ histogram_census =
 ggplot(senic_data, aes(x = census)) + 
      geom_histogram(bins =11, color="darkblue", fill="lightblue") + labs (title = "Figure 5.Census Distribution", x="Average Number of Hospital Patients Per Day", y ="Count") 
 
-histogram_age+histogram_length+histogram_risk+histogram_beds+histogram_census
+histogram_age+histogram_length
 ```
 
-<img src="Final-draft_files/figure-gfm/histograms #1-1.png" width="90%" />
+<img src="Final-draft_files/figure-gfm/histograms 1-1.png" width="90%" />
+
+``` r
+histogram_risk+histogram_beds+histogram_census
+```
+
+<img src="Final-draft_files/figure-gfm/histograms 1-2.png" width="90%" />
 
 \#2\_Correlations
 -<https://statsandr.com/blog/correlation-coefficient-and-correlation-test-in-r/>
@@ -143,13 +147,29 @@ cor.test(senic_data$age, senic_data$length, method="pearson")
     ## 0.188914
 
 ``` r
+cor.test(senic_data$age, senic_data$risk, method="pearson")
+```
+
+    ## 
+    ##  Pearson's product-moment correlation
+    ## 
+    ## data:  senic_data$age and senic_data$risk
+    ## t = 0.011517, df = 111, p-value = 0.9908
+    ## alternative hypothesis: true correlation is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -0.1836737  0.1857855
+    ## sample estimates:
+    ##         cor 
+    ## 0.001093166
+
+``` r
 ggplot(senic_data) +
   aes(x = age, y = length) +
   geom_point(colour = "#0c4c8a") +
   theme_minimal()
 ```
 
-<img src="Final-draft_files/figure-gfm/unnamed-chunk-1-1.png" width="90%" />
+<img src="Final-draft_files/figure-gfm/correlations-1.png" width="90%" />
 
 ``` r
 #corr matrix, run corrplot lib 
@@ -160,4 +180,34 @@ corrplot(cor(senic_data1),
 )
 ```
 
-<img src="Final-draft_files/figure-gfm/unnamed-chunk-1-2.png" width="90%" />
+<img src="Final-draft_files/figure-gfm/correlations-2.png" width="90%" />
+
+``` r
+one.way <- aov(length ~ region, data = senic_data)
+
+summary(one.way)
+```
+
+    ##              Df Sum Sq Mean Sq F value   Pr(>F)    
+    ## region        3  103.5   34.52   12.31 5.38e-07 ***
+    ## Residuals   109  305.7    2.80                     
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+## Regression \#3
+
+``` r
+linearmod = lm(length ~ age + beds + census + risk , data=senic_data)  # build linear regression model on full data
+
+linearmod %>%  
+    broom::tidy()%>% 
+knitr::kable(digits=3)
+```
+
+| term        | estimate | std.error | statistic | p.value |
+| :---------- | -------: | --------: | --------: | ------: |
+| (Intercept) |    2.097 |     1.659 |     1.264 |   0.209 |
+| age         |    0.086 |     0.030 |     2.871 |   0.005 |
+| beds        |  \-0.013 |     0.004 |   \-3.617 |   0.000 |
+| census      |    0.020 |     0.005 |     4.445 |   0.000 |
+| risk        |    5.497 |     1.078 |     5.101 |   0.000 |

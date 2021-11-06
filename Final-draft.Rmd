@@ -11,7 +11,7 @@ library(broom)
 library(dbplyr)
 library(viridis)
 library(corrplot)
-
+library(knitr)
 knitr::opts_chunk$set(
 	echo = TRUE,
 	warning = FALSE,
@@ -31,11 +31,9 @@ scale_fill_discrete = scale_fill_viridis_d
 theme_set(theme_minimal() + theme(legend.position = "bottom"))
 ```
 
-### Project Title
-201A Analysis Project 
-### Members:
+### 201A Analysis Project 
 
-Julián Ponce
+### Julián Ponce
 
 
 ``` {r importing data}
@@ -75,7 +73,7 @@ senic_data1 =
 ```
 #1_Univariate
 Histograms in case needed but i think SKIMR IS okay
-```{r histograms #1}
+```{r histograms 1}
 
 histogram_age =
 ggplot(senic_data, aes(x = age)) + 
@@ -87,7 +85,7 @@ ggplot(senic_data, aes(x = length)) +
 
 histogram_risk =
 ggplot(senic_data, aes(x = risk)) + 
-   geom_histogram(bins =11, color="darkblue", fill="lightblue") + labs (title = "Figure 3.Infection Risk Distribution", x="Infeciton Risk(Years)", y ="Count") 
+   geom_histogram(bins =11, color="darkblue", fill="lightblue") + labs (title = "Figure 3.Infection Distribution", x="Infection Risk(Years)", y ="Count") 
 
 histogram_beds =
 ggplot(senic_data, aes(x = beds)) + 
@@ -97,19 +95,21 @@ histogram_census =
 ggplot(senic_data, aes(x = census)) + 
      geom_histogram(bins =11, color="darkblue", fill="lightblue") + labs (title = "Figure 5.Census Distribution", x="Average Number of Hospital Patients Per Day", y ="Count") 
 
-histogram_age+histogram_length+histogram_risk+histogram_beds+histogram_census
+histogram_age+histogram_length
+histogram_risk+histogram_beds+histogram_census
 ```
 
 #2_Correlations -https://statsandr.com/blog/correlation-coefficient-and-correlation-test-in-r/
 
-```{r}
+```{r correlations}
 
 cor.test(senic_data$age, senic_data$length, method="pearson")
-
+cor.test(senic_data$age, senic_data$risk, method="pearson")
 ggplot(senic_data) +
   aes(x = age, y = length) +
   geom_point(colour = "#0c4c8a") +
   theme_minimal()
+
 
 #corr matrix, run corrplot lib 
 
@@ -117,5 +117,23 @@ corrplot(cor(senic_data1),
   method = "number",
   type = "upper" # show only upper side
 )
+
+```
+
+```{r anova 3}
+
+one.way <- aov(length ~ region, data = senic_data)
+
+summary(one.way)
+```
+
+## Regression #3
+```{r linear model}
+
+linearmod = lm(length ~ age + beds + census + risk , data=senic_data)  # build linear regression model on full data
+
+linearmod %>%  
+    broom::tidy()%>% 
+knitr::kable(digits=3)
 ```
 
