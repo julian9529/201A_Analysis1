@@ -219,3 +219,71 @@ knitr::kable(digits=3)
 | beds        |  \-0.013 |     0.004 |   \-3.617 |   0.000 |
 | census      |    0.020 |     0.005 |     4.445 |   0.000 |
 | risk        |    5.497 |     1.078 |     5.101 |   0.000 |
+
+``` r
+ senic_region1 =
+senic_data %>% 
+  filter(region == "1")
+
+linearmod = lm(length ~ risk , data=senic_region1)  # build linear regression model on full data
+
+linearmod %>%  
+    broom::tidy()%>% 
+knitr::kable(digits=3)
+```
+
+| term        | estimate | std.error | statistic | p.value |
+| :---------- | -------: | --------: | --------: | ------: |
+| (Intercept) |    4.538 |     1.585 |     2.863 |   0.008 |
+| risk        |   13.477 |     3.159 |     4.267 |   0.000 |
+
+``` r
+ senic_region2 =
+senic_data %>% 
+  filter(region == "2")
+
+linearmod = lm(length ~  risk , data=senic_region2)  # build linear regression model on full data
+
+linearmod %>%  
+    broom::tidy()%>% 
+knitr::kable(digits=3)
+```
+
+| term        | estimate | std.error | statistic | p.value |
+| :---------- | -------: | --------: | --------: | ------: |
+| (Intercept) |    7.561 |     0.627 |    12.063 |   0.000 |
+| risk        |    4.832 |     1.366 |     3.536 |   0.001 |
+
+``` r
+ senic_region3 =
+senic_data %>% 
+  filter(region == "3")
+
+linearmod = lm(length ~  risk , data=senic_region3)  # build linear regression model on full data
+
+linearmod %>%  
+    broom::tidy()%>% 
+knitr::kable(digits=3)
+```
+
+| term        | estimate | std.error | statistic | p.value |
+| :---------- | -------: | --------: | --------: | ------: |
+| (Intercept) |    7.129 |     0.463 |    15.393 |       0 |
+| risk        |    5.251 |     1.107 |     4.742 |       0 |
+
+``` r
+senic_region4 =
+senic_data %>% 
+  filter(region == "4")
+
+linearmod = lm(length ~  risk , data=senic_region4)  # build linear regression model on full data
+
+linearmod %>%  
+    broom::tidy()%>% 
+knitr::kable(digits=3)
+```
+
+| term        | estimate | std.error | statistic | p.value |
+| :---------- | -------: | --------: | --------: | ------: |
+| (Intercept) |    8.038 |     1.365 |     5.889 |   0.000 |
+| risk        |    0.173 |     3.058 |     0.056 |   0.956 |

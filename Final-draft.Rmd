@@ -151,3 +151,47 @@ linearmod %>%
 knitr::kable(digits=3)
 ```
 
+```{r regression stratefied}
+ senic_region1 =
+senic_data %>% 
+  filter(region == "1")
+
+linearmod = lm(length ~ risk , data=senic_region1)  # build linear regression model on full data
+
+linearmod %>%  
+    broom::tidy()%>% 
+knitr::kable(digits=3)
+
+
+ senic_region2 =
+senic_data %>% 
+  filter(region == "2")
+
+linearmod = lm(length ~  risk , data=senic_region2)  # build linear regression model on full data
+
+linearmod %>%  
+    broom::tidy()%>% 
+knitr::kable(digits=3)
+
+ senic_region3 =
+senic_data %>% 
+  filter(region == "3")
+
+linearmod = lm(length ~  risk , data=senic_region3)  # build linear regression model on full data
+
+linearmod %>%  
+    broom::tidy()%>% 
+knitr::kable(digits=3)
+
+
+senic_region4 =
+senic_data %>% 
+  filter(region == "4")
+
+linearmod = lm(length ~  risk , data=senic_region4)  # build linear regression model on full data
+
+linearmod %>%  
+    broom::tidy()%>% 
+knitr::kable(digits=3)
+```
+
