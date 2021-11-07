@@ -28,40 +28,6 @@ janitor::clean_names()
     ## )
 
 ``` r
-skimr::skim(senic_data)
-```
-
-|                                                  |             |
-| :----------------------------------------------- | :---------- |
-| Name                                             | senic\_data |
-| Number of rows                                   | 113         |
-| Number of columns                                | 12          |
-| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_   |             |
-| Column type frequency:                           |             |
-| numeric                                          | 12          |
-| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ |             |
-| Group variables                                  | None        |
-
-Data summary
-
-**Variable type: numeric**
-
-| skim\_variable | n\_missing | complete\_rate |   mean |     sd |   p0 |    p25 |    p50 |    p75 |   p100 | hist  |
-| :------------- | ---------: | -------------: | -----: | -----: | ---: | -----: | -----: | -----: | -----: | :---- |
-| id             |          0 |              1 |  57.00 |  32.76 |  1.0 |  29.00 |  57.00 |  85.00 | 113.00 | ▇▇▇▇▇ |
-| length         |          0 |              1 |   9.65 |   1.91 |  6.7 |   8.34 |   9.42 |  10.47 |  19.56 | ▇▇▁▁▁ |
-| age            |          0 |              1 |  53.23 |   4.46 | 38.8 |  50.90 |  53.20 |  56.20 |  65.90 | ▁▂▇▃▁ |
-| risk           |          0 |              1 |   4.35 |   1.34 |  1.3 |   3.70 |   4.40 |   5.20 |   7.80 | ▂▃▇▃▁ |
-| culture        |          0 |              1 |  15.79 |  10.23 |  1.6 |   8.40 |  14.10 |  20.30 |  60.50 | ▇▆▂▁▁ |
-| xray           |          0 |              1 |  81.63 |  19.36 | 39.6 |  69.50 |  82.30 |  94.10 | 133.50 | ▃▅▇▃▁ |
-| beds           |          0 |              1 | 252.17 | 192.84 | 29.0 | 106.00 | 186.00 | 312.00 | 835.00 | ▇▅▂▁▁ |
-| msch           |          0 |              1 |   1.85 |   0.36 |  1.0 |   2.00 |   2.00 |   2.00 |   2.00 | ▂▁▁▁▇ |
-| region         |          0 |              1 |   2.36 |   1.01 |  1.0 |   2.00 |   2.00 |   3.00 |   4.00 | ▆▇▁▇▃ |
-| census         |          0 |              1 | 191.37 | 153.76 | 20.0 |  68.00 | 143.00 | 252.00 | 791.00 | ▇▃▂▁▁ |
-| nurses         |          0 |              1 | 173.25 | 139.27 | 14.0 |  66.00 | 132.00 | 218.00 | 656.00 | ▇▅▂▁▁ |
-| svcs           |          0 |              1 |  43.16 |  15.20 |  5.7 |  31.40 |  42.90 |  54.30 |  80.00 | ▁▆▇▆▂ |
-
-``` r
 senic_data =
   senic_data %>%
   #c is to include only these while -c is remove these
@@ -91,7 +57,46 @@ senic_data1 =
   #c is to include only these while -c is remove these
   subset(select = c(length, age,risk, beds,census   ))
 #exclude data for culture, xrays, msch, nurses, and svcs 
+skimr::skim(senic_data1) 
 ```
+
+|                                                  |              |
+| :----------------------------------------------- | :----------- |
+| Name                                             | senic\_data1 |
+| Number of rows                                   | 113          |
+| Number of columns                                | 5            |
+| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_   |              |
+| Column type frequency:                           |              |
+| numeric                                          | 5            |
+| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ |              |
+| Group variables                                  | None         |
+
+Data summary
+
+**Variable type: numeric**
+
+| skim\_variable | n\_missing | complete\_rate |   mean |     sd |    p0 |    p25 |    p50 |    p75 |   p100 | hist  |
+| :------------- | ---------: | -------------: | -----: | -----: | ----: | -----: | -----: | -----: | -----: | :---- |
+| length         |          0 |              1 |   9.65 |   1.91 |  6.70 |   8.34 |   9.42 |  10.47 |  19.56 | ▇▇▁▁▁ |
+| age            |          0 |              1 |  53.23 |   4.46 | 38.80 |  50.90 |  53.20 |  56.20 |  65.90 | ▁▂▇▃▁ |
+| risk           |          0 |              1 |   0.44 |   0.13 |  0.13 |   0.37 |   0.44 |   0.52 |   0.78 | ▂▃▇▃▁ |
+| beds           |          0 |              1 | 252.17 | 192.84 | 29.00 | 106.00 | 186.00 | 312.00 | 835.00 | ▇▅▂▁▁ |
+| census         |          0 |              1 | 191.37 | 153.76 | 20.00 |  68.00 | 143.00 | 252.00 | 791.00 | ▇▃▂▁▁ |
+
+\#Library Janitor needed for tabyl
+
+``` r
+senic_data %>%
+tabyl(region)%>%
+knitr::kable(digits=3)
+```
+
+| region |  n | percent |
+| :----- | -: | ------: |
+| 1      | 28 |   0.248 |
+| 2      | 32 |   0.283 |
+| 3      | 37 |   0.327 |
+| 4      | 16 |   0.142 |
 
 \#1\_Univariate Histograms in case needed but i think SKIMR IS okay
 
@@ -185,16 +190,19 @@ corrplot(cor(senic_data1),
 ``` r
 one.way <- aov(length ~ region, data = senic_data)
 
-summary(one.way)
+one.way %>%  
+    broom::tidy()%>% 
+knitr::kable(digits=3)
 ```
 
-    ##              Df Sum Sq Mean Sq F value   Pr(>F)    
-    ## region        3  103.5   34.52   12.31 5.38e-07 ***
-    ## Residuals   109  305.7    2.80                     
-    ## ---
-    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+| term      |  df |   sumsq | meansq | statistic | p.value |
+| :-------- | --: | ------: | -----: | --------: | ------: |
+| region    |   3 | 103.554 | 34.518 |    12.309 |       0 |
+| Residuals | 109 | 305.656 |  2.804 |        NA |      NA |
 
 ## Regression \#3
+
+# Using gml or lm?
 
 ``` r
 linearmod = lm(length ~ age + beds + census + risk , data=senic_data)  # build linear regression model on full data

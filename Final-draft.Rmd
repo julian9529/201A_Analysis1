@@ -12,6 +12,7 @@ library(dbplyr)
 library(viridis)
 library(corrplot)
 library(knitr)
+library(janitor)
 knitr::opts_chunk$set(
 	echo = TRUE,
 	warning = FALSE,
@@ -40,12 +41,13 @@ theme_set(theme_minimal() + theme(legend.position = "bottom"))
 senic_data =
   read_csv (file = "./data/SENIC.csv")%>%
 janitor::clean_names()
-skimr::skim(senic_data)
+
 senic_data =
   senic_data %>%
   #c is to include only these while -c is remove these
   subset(select = c(id, length, age,risk, beds,region,census ))
 #exclude data for culture, xrays, msch, nurses, and svcs 
+
 
 ```
 
@@ -69,8 +71,17 @@ senic_data1 =
   #c is to include only these while -c is remove these
   subset(select = c(length, age,risk, beds,census   ))
 #exclude data for culture, xrays, msch, nurses, and svcs 
-
+skimr::skim(senic_data1) 
 ```
+
+#Library Janitor needed for tabyl
+```{r summary stats}
+
+senic_data %>%
+tabyl(region)%>%
+knitr::kable(digits=3)
+```
+
 #1_Univariate
 Histograms in case needed but i think SKIMR IS okay
 ```{r histograms 1}
@@ -124,10 +135,13 @@ corrplot(cor(senic_data1),
 
 one.way <- aov(length ~ region, data = senic_data)
 
-summary(one.way)
+one.way %>%  
+    broom::tidy()%>% 
+knitr::kable(digits=3)
 ```
 
 ## Regression #3
+# Using gml or lm? 
 ```{r linear model}
 
 linearmod = lm(length ~ age + beds + census + risk , data=senic_data)  # build linear regression model on full data
