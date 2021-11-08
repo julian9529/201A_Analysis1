@@ -205,7 +205,10 @@ knitr::kable(digits=3)
 # Using gml or lm?
 
 ``` r
-linearmod = lm(length ~ age + beds + census + risk , data=senic_data)  # build linear regression model on full data
+linearmod = lm(length ~ age , data=senic_data)  # build linear regression model on full data
+linearmod1 = lm(length ~ beds, data=senic_data)
+linearmod2 = lm(length ~ census, data=senic_data) 
+linearmod3 = lm(length ~risk , data=senic_data) 
 
 linearmod %>%  
     broom::tidy()%>% 
@@ -214,11 +217,41 @@ knitr::kable(digits=3)
 
 | term        | estimate | std.error | statistic | p.value |
 | :---------- | -------: | --------: | --------: | ------: |
-| (Intercept) |    2.097 |     1.659 |     1.264 |   0.209 |
-| age         |    0.086 |     0.030 |     2.871 |   0.005 |
-| beds        |  \-0.013 |     0.004 |   \-3.617 |   0.000 |
-| census      |    0.020 |     0.005 |     4.445 |   0.000 |
-| risk        |    5.497 |     1.078 |     5.101 |   0.000 |
+| (Intercept) |    5.340 |     2.133 |     2.503 |   0.014 |
+| age         |    0.081 |     0.040 |     2.027 |   0.045 |
+
+``` r
+linearmod1 %>%  
+    broom::tidy()%>% 
+knitr::kable(digits=3)
+```
+
+| term        | estimate | std.error | statistic | p.value |
+| :---------- | -------: | --------: | --------: | ------: |
+| (Intercept) |    8.625 |     0.272 |    31.704 |       0 |
+| beds        |    0.004 |     0.001 |     4.726 |       0 |
+
+``` r
+linearmod2 %>%  
+    broom::tidy()%>% 
+knitr::kable(digits=3)
+```
+
+| term        | estimate | std.error | statistic | p.value |
+| :---------- | -------: | --------: | --------: | ------: |
+| (Intercept) |    8.521 |     0.255 |    33.464 |       0 |
+| census      |    0.006 |     0.001 |     5.670 |       0 |
+
+``` r
+linearmod3 %>%  
+    broom::tidy()%>% 
+knitr::kable(digits=3)
+```
+
+| term        | estimate | std.error | statistic | p.value |
+| :---------- | -------: | --------: | --------: | ------: |
+| (Intercept) |    6.337 |     0.521 |    12.156 |       0 |
+| risk        |    7.604 |     1.144 |     6.645 |       0 |
 
 ``` r
  senic_region1 =
