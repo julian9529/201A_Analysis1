@@ -127,10 +127,16 @@ histogram_age+histogram_length
 <img src="Final-draft_files/figure-gfm/histograms 1-1.png" width="90%" />
 
 ``` r
-histogram_risk+histogram_beds+histogram_census
+histogram_risk+histogram_beds
 ```
 
 <img src="Final-draft_files/figure-gfm/histograms 1-2.png" width="90%" />
+
+``` r
+histogram_census
+```
+
+<img src="Final-draft_files/figure-gfm/histograms 1-3.png" width="90%" />
 
 \#2\_Correlations
 -<https://statsandr.com/blog/correlation-coefficient-and-correlation-test-in-r/>
@@ -200,9 +206,22 @@ knitr::kable(digits=3)
 | region    |   3 | 103.554 | 34.518 |    12.309 |       0 |
 | Residuals | 109 | 305.656 |  2.804 |        NA |      NA |
 
-## Regression \#3
+``` r
+TukeyHSD(one.way) %>% 
+    broom::tidy()%>% 
+knitr::kable(digits=3)
+```
 
-# Using gml or lm?
+| term   | contrast | null.value | estimate | conf.low | conf.high | adj.p.value |
+| :----- | :------- | ---------: | -------: | -------: | --------: | ----------: |
+| region | 2-1      |          0 |  \-1.405 |  \-2.536 |   \-0.275 |       0.008 |
+| region | 3-1      |          0 |  \-1.898 |  \-2.992 |   \-0.803 |       0.000 |
+| region | 4-1      |          0 |  \-2.975 |  \-4.344 |   \-1.606 |       0.000 |
+| region | 3-2      |          0 |  \-0.492 |  \-1.547 |     0.563 |       0.617 |
+| region | 4-2      |          0 |  \-1.570 |  \-2.907 |   \-0.232 |       0.015 |
+| region | 4-3      |          0 |  \-1.078 |  \-2.385 |     0.230 |       0.144 |
+
+## Regression \#3
 
 ``` r
 linearmod = lm(length ~ age , data=senic_data)  # build linear regression model on full data

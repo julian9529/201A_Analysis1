@@ -107,7 +107,8 @@ ggplot(senic_data, aes(x = census)) +
      geom_histogram(bins =11, color="darkblue", fill="lightblue") + labs (title = "Figure 5.Census Distribution", x="Average Number of Hospital Patients Per Day", y ="Count") 
 
 histogram_age+histogram_length
-histogram_risk+histogram_beds+histogram_census
+histogram_risk+histogram_beds
+histogram_census
 ```
 
 #2_Correlations -https://statsandr.com/blog/correlation-coefficient-and-correlation-test-in-r/
@@ -134,15 +135,19 @@ corrplot(cor(senic_data1),
 
 ```{r anova 3}
 
+
 one.way <- aov(length ~ region, data = senic_data)
 
 one.way %>%  
     broom::tidy()%>% 
 knitr::kable(digits=3)
+
+TukeyHSD(one.way) %>% 
+    broom::tidy()%>% 
+knitr::kable(digits=3)
 ```
 
 ## Regression #3
-# Using gml or lm? 
 ```{r linear model}
 
 linearmod = lm(length ~ age , data=senic_data)  # build linear regression model on full data
