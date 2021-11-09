@@ -339,3 +339,20 @@ knitr::kable(digits=3)
 | :---------- | -------: | --------: | --------: | ------: |
 | (Intercept) |    8.038 |     1.365 |     5.889 |   0.000 |
 | risk        |    0.173 |     3.058 |     0.056 |   0.956 |
+
+\#\#regression on X6
+
+``` r
+senic_data=senic_data %>% 
+mutate(freebeds= beds-census)
+
+linearmod = lm(length ~  freebeds , data=senic_data)  
+linearmod %>%  
+    broom::tidy()%>% 
+knitr::kable(digits=3)
+```
+
+| term        | estimate | std.error | statistic | p.value |
+| :---------- | -------: | --------: | --------: | ------: |
+| (Intercept) |    9.383 |     0.278 |    33.732 |   0.000 |
+| freebeds    |    0.004 |     0.003 |     1.248 |   0.215 |

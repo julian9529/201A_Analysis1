@@ -216,3 +216,14 @@ linearmod %>%
 knitr::kable(digits=3)
 ```
 
+##regression on X6
+```{r new variable }
+senic_data=senic_data %>% 
+mutate(freebeds= beds-census)
+
+linearmod = lm(length ~  freebeds , data=senic_data)  
+linearmod %>%  
+    broom::tidy()%>% 
+knitr::kable(digits=3)
+```
+
