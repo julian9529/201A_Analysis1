@@ -14,7 +14,8 @@ library(corrplot)
 library(knitr)
 library(janitor)
 library(corrplot)
-
+library(descriptr)
+library(olsrr)
 knitr::opts_chunk$set(
 	echo = TRUE,
 	warning = FALSE,
@@ -251,9 +252,12 @@ rquery.cormat(senic_data1, type="flatten", graph=FALSE)
 
 
 ```{r anova 3}
+ols_test_bartlett(senic_data, 'length','region')
 
+one.way <- oneway.test(length ~ region, data = senic_data, var.equal = TRUE )
 
-one.way <- aov(length ~ region, data = senic_data)
+one.way <- aov(length ~ region, data = senic_data, )
+
 
 one.way %>%  
     broom::tidy()%>% 
@@ -267,7 +271,8 @@ knitr::kable(digits=3)
 ## Regression #3
 ```{r linear model}
 
-linearmod = lm(length ~ age , data=senic_data)  # build linear regression model on full data
+linearmod = lm(length ~ age , data=senic_data) 
+# build linear regression model on full data
 linearmod1 = lm(length ~ beds, data=senic_data)
 linearmod2 = lm(length ~ census, data=senic_data) 
 linearmod3 = lm(length ~risk , data=senic_data) 
@@ -290,11 +295,16 @@ knitr::kable(digits=3)
 ```
 
 ```{r regression stratefied}
+
  senic_region1 =
 senic_data %>% 
   filter(region == "1")
 
+
+
 linearmod = lm(length ~ risk , data=senic_region1)  # build linear regression model on full data
+
+confint(lm(length ~ risk , data=senic_region1))
 
 linearmod %>%  
     broom::tidy()%>% 
@@ -305,7 +315,9 @@ knitr::kable(digits=3)
 senic_data %>% 
   filter(region == "2")
 
-linearmod = lm(length ~  risk , data=senic_region2)  # build linear regression model on full data
+linearmod = lm(length ~  risk , data=senic_region2) 
+
+confint(lm(length ~ risk , data=senic_region2))
 
 linearmod %>%  
     broom::tidy()%>% 
@@ -315,6 +327,8 @@ knitr::kable(digits=3)
 senic_data %>% 
   filter(region == "3")
 
+ confint(lm(length ~ risk , data=senic_region3))
+ 
 linearmod = lm(length ~  risk , data=senic_region3)  # build linear regression model on full data
 
 linearmod %>%  
@@ -328,6 +342,8 @@ senic_data %>%
 
 linearmod = lm(length ~  risk , data=senic_region4)  # build linear regression model on full data
 
+  confint(lm(length ~ risk , data=senic_region4))
+  
 linearmod %>%  
     broom::tidy()%>% 
 knitr::kable(digits=3)

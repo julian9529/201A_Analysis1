@@ -327,7 +327,30 @@ rquery.cormat(senic_data1, type="flatten", graph=FALSE)
     ## NULL
 
 ``` r
-one.way <- aov(length ~ region, data = senic_data)
+ols_test_bartlett(senic_data, 'length','region')
+```
+
+    ## 
+    ##     Bartlett's Test of Homogenity of Variances    
+    ## ------------------------------------------------
+    ## Ho: Variances are equal across groups
+    ## Ha: Variances are unequal for atleast two groups
+    ## 
+    ##           Data           
+    ##  ------------------------
+    ##  Variables: length region 
+    ## 
+    ##          Test Summary          
+    ##  ------------------------------
+    ##  DF            =    1 
+    ##  Chi2          =    42.66464 
+    ##  Prob > Chi2   =    6.49763e-11
+
+``` r
+one.way <- oneway.test(length ~ region, data = senic_data, var.equal = TRUE )
+
+one.way <- aov(length ~ region, data = senic_data, )
+
 
 one.way %>%  
     broom::tidy()%>% 
@@ -357,7 +380,8 @@ knitr::kable(digits=3)
 ## Regression \#3
 
 ``` r
-linearmod = lm(length ~ age , data=senic_data)  # build linear regression model on full data
+linearmod = lm(length ~ age , data=senic_data) 
+# build linear regression model on full data
 linearmod1 = lm(length ~ beds, data=senic_data)
 linearmod2 = lm(length ~ census, data=senic_data) 
 linearmod3 = lm(length ~risk , data=senic_data) 
@@ -410,8 +434,18 @@ knitr::kable(digits=3)
 senic_data %>% 
   filter(region == "1")
 
+
+
 linearmod = lm(length ~ risk , data=senic_region1)  # build linear regression model on full data
 
+confint(lm(length ~ risk , data=senic_region1))
+```
+
+    ##                2.5 %    97.5 %
+    ## (Intercept) 1.279450  7.796392
+    ## risk        6.984451 19.970467
+
+``` r
 linearmod %>%  
     broom::tidy()%>% 
 knitr::kable(digits=3)
@@ -427,8 +461,16 @@ knitr::kable(digits=3)
 senic_data %>% 
   filter(region == "2")
 
-linearmod = lm(length ~  risk , data=senic_region2)  # build linear regression model on full data
+linearmod = lm(length ~  risk , data=senic_region2) 
 
+confint(lm(length ~ risk , data=senic_region2))
+```
+
+    ##                2.5 %   97.5 %
+    ## (Intercept) 6.280526 8.840486
+    ## risk        2.041384 7.622031
+
+``` r
 linearmod %>%  
     broom::tidy()%>% 
 knitr::kable(digits=3)
@@ -444,6 +486,14 @@ knitr::kable(digits=3)
 senic_data %>% 
   filter(region == "3")
 
+ confint(lm(length ~ risk , data=senic_region3))
+```
+
+    ##                2.5 %   97.5 %
+    ## (Intercept) 6.189059 8.069615
+    ## risk        3.002664 7.498990
+
+``` r
 linearmod = lm(length ~  risk , data=senic_region3)  # build linear regression model on full data
 
 linearmod %>%  
@@ -463,6 +513,14 @@ senic_data %>%
 
 linearmod = lm(length ~  risk , data=senic_region4)  # build linear regression model on full data
 
+  confint(lm(length ~ risk , data=senic_region4))
+```
+
+    ##                 2.5 %    97.5 %
+    ## (Intercept)  5.110812 10.965285
+    ## risk        -6.386564  6.732136
+
+``` r
 linearmod %>%  
     broom::tidy()%>% 
 knitr::kable(digits=3)
